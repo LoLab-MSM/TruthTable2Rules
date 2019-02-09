@@ -1,0 +1,17 @@
+
+molecule: target
+---
+reaction: signal
+direction: input
+reactant: reactant
+rxnTemplate: reactant() + target(reactant=off) >> reactant() + target(reactant=on)
+$$$
++++
+
+molecule: reactant
+---
+reaction: signal
+direction: output
+target: target
+$$$
++++
