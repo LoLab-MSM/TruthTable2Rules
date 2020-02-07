@@ -1,7 +1,7 @@
 # exported from PySB model 'model'
 
 import numpy as np
-from pysb.integrate import Solver
+from pysb.simulator import ScipyOdeSimulator
 import pylab as pl
 import matplotlib.pyplot as plt
 from pysb import Model, Monomer, Parameter, Expression, Compartment, Rule, Observable, Initial, MatchOnce, Annotation, ANY, WILD

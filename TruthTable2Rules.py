@@ -42,7 +42,7 @@ def runTT2R(model_name):
 
     MotifBuilder(model_nodes, library)
     # Combine_and_Build(model_nodes, library, input_type='Boolean', output_type='logical', top=1)
-    ModelBuilder(0, model_nodes, library)
+    ModelBuilder(0, model_nodes, library, model_name)
 
 
 def importModel(model_name):
@@ -292,12 +292,13 @@ class ModelBuilder(Builder):
     """
     Assemble a PySB model from a Boolean model.
     """
-    def __init__(self, num, nodes, library, iv_type='distribute'):
+    def __init__(self, num, nodes, library, model_name, iv_type='distribute'):
 
         super(ModelBuilder, self).__init__()
         self.num = num
         self.nodes = nodes
         self.library = library
+        self.model_name = model_name
         self.monomer_info = defaultdict(list)
         self.action_info = defaultdict(list)
         self.base_states = defaultdict(list)
@@ -356,20 +357,36 @@ class ModelBuilder(Builder):
 
     def _export(self):
 
-        f = open('model_' + str(self.num) + '.py', 'w+')
+        f = open(self.model_name.split('.')[0] + '_pysb' + '.py', 'w+')
         f.write(PysbFlatExporter(self.model).export())
         f.close()
 
-        f = open('model_' + str(self.num) + '.py', "r")
+        f = open(self.model_name.split('.')[0] + '_pysb' + '.py', "r")
         contents = f.readlines()
         f.close()
 
-        contents.insert(2, 'import numpy as np\nfrom pysb.integrate import Solver\nimport pylab as pl\nimport matplotlib.pyplot as plt\n')
+        contents.insert(2, 'import numpy as np\nfrom pysb.simulator import ScipyOdeSimulator\nimport pylab as pl\nimport matplotlib.pyplot as plt\n')
 
-        f = open('model_' + str(self.num) + '.py', "w")
+        f = open(self.model_name.split('.')[0] + '_pysb' + '.py', "w")
         contents = "".join(contents)
         f.write(contents)
         f.close()
+
+
+        # f = open('model_' + str(self.num) + '.py', 'w+')
+        # f.write(PysbFlatExporter(self.model).export())
+        # f.close()
+        #
+        # f = open('model_' + str(self.num) + '.py', "r")
+        # contents = f.readlines()
+        # f.close()
+        #
+        # contents.insert(2, 'import numpy as np\nfrom pysb.integrate import Solver\nimport pylab as pl\nimport matplotlib.pyplot as plt\n')
+        #
+        # f = open('model_' + str(self.num) + '.py', "w")
+        # contents = "".join(contents)
+        # f.write(contents)
+        # f.close()
 
     def _find_sites(self, interaction):
 

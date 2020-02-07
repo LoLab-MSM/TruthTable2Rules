@@ -1,7 +1,6 @@
 # exported from PySB model 'model'
 
 import numpy as np
-from pysb.integrate import Solver
 from pysb.simulator import ScipyOdeSimulator
 import pylab as pl
 import matplotlib.pyplot as plt
@@ -77,7 +76,6 @@ Initial(B(A='on', C='on'), B_0_0)
 Initial(B(A='on', C='off'), B_1_0)
 Initial(B(A='off', C='on'), B_2_0)
 Initial(B(A='off', C='off'), B_3_0)
-
 
 time = [0, 1000]
 model_solver = ScipyOdeSimulator(model, tspan=time, integrator='vode', integrator_options={'atol': 1e-12, 'rtol': 1e-12})
